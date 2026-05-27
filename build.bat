@@ -15,15 +15,18 @@ pyinstaller ^
   --onefile ^
   --windowed ^
   --name SlammerWiz ^
+  --icon "assets\slammerwiz.ico" ^
   --hidden-import PyQt6 ^
   --hidden-import pynput.mouse._win32 ^
   --hidden-import pynput.keyboard._win32 ^
   --collect-submodules keyboard ^
+  --collect-all numpy ^
   --collect-all rapidocr_onnxruntime ^
   --collect-all onnxruntime ^
   --add-data "data;data" ^
   --add-data "assets;assets" ^
-  src\main.py
+  --paths . ^
+  slammerwiz_main.py
 
 if exist dist\SlammerWiz.exe (
   copy /Y config.json dist\config.json >nul
