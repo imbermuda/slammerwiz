@@ -1,6 +1,6 @@
 # SlammerWiz
 
-**Chaos Orb safety net for Path of Exile 2.** A Windows overlay that reads your hovered item's tooltip after every left-click and locks the gate the instant a target mod appears — so you can't accidentally re-slam a perfect roll.
+**Chaos Orb safety net for Path of Exile 2.** A Windows overlay that reads your hovered item's tooltip after every left-click and locks the gate the instant a target mod appears, so you can't accidentally re-slam a perfect roll.
 
 Hit `F9`, spam-slam, and the moment your tablet rolls the mod you want, the overlay closes itself before your next click reaches the game. Right-click to release the gate and move on.
 
