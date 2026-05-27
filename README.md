@@ -9,10 +9,10 @@ Hit `F9`, spam-slam, and the moment your tablet rolls the mod you want, the over
 ## Install
 
 1. Download **`SlammerWiz.exe`** from the [latest release](https://github.com/imbermuda/slammerwiz/releases/latest).
-2. Run it. Windows SmartScreen will warn (unsigned binary) — click *More info → Run anyway*.
+2. Run it. Windows SmartScreen will warn (unsigned binary) - click *More info → Run anyway*.
 3. The overlay docks top-right of your primary monitor.
 
-> **Heads up.** SlammerWiz only ever reads your own screen / clipboard and only ever blocks your own left-clicks. It does **not** read game memory, modify game files, send any input into PoE, or do anything you couldn't do manually. Reading clipboard + dropping local mouse clicks is the safest path I could design — but I'm not GGG. Use at your own risk.
+> **Heads up.** SlammerWiz only ever reads your own screen / clipboard and only ever blocks your own left-clicks. It does **not** read game memory, modify game files, send any input into PoE, or do anything you couldn't do manually. Reading clipboard + dropping local mouse clicks is the safest path I could design, but I'm not GGG. Use at your own risk.
 
 ## How to use it
 
@@ -28,7 +28,7 @@ Hit `F9`, spam-slam, and the moment your tablet rolls the mod you want, the over
 | --- | --- |
 | `F9` | Arm / disarm |
 | `Right-click` | Release the gate after a hit |
-| `Ctrl+Shift+Q` | Panic — instant disarm |
+| `Ctrl+Shift+Q` | Panic - instant disarm |
 | `Ctrl+Q` | Quit |
 
 ## How it works (briefly)
@@ -69,7 +69,7 @@ Output lands in `dist\SlammerWiz.exe`.
 
 ## Status
 
-**v1.0** — clipboard-only architecture, six guard invariant tests green, validated on PoE 2 Fate of the Vaal league.
+**v1.0** - clipboard-only architecture, six guard invariant tests green, validated on PoE 2 Fate of the Vaal league.
 
 ## License
 
