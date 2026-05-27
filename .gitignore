@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# PyInstaller build artifacts
+build/
+dist/
+*.spec.bak
+
+# Local data (per-user, never commit)
+config.json.bak
+config.json.*.tmp
+*.sqlite3
+*.sqlite3-journal
+events.log
+last_ocr.log
+catalog_cache.json
+drift.jsonl
+debug/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

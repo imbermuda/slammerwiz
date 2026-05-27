@@ -1,0 +1,151 @@
+{
+  "catalog_version": "2026.04.23-seed-0",
+  "notes": "SEED values — verify every tier's min/max against poe2db.tw before using in production. Mod list is reasonably complete for Precursor Tablets in PoE 2 EA but patch updates land often.",
+  "items": {
+    "precursor_tablet": {
+      "display_name": "Precursor Tablet",
+      "mods": {
+        "tablet_pack_size": {
+          "display_name": "Monster Pack Size",
+          "stat": "pack_size",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Monster Pack Size$",
+          "tiers": [
+            {"t": 1, "min": 17, "max": 20, "ilvl": 80},
+            {"t": 2, "min": 13, "max": 16, "ilvl": 72},
+            {"t": 3, "min": 9,  "max": 12, "ilvl": 60}
+          ]
+        },
+        "tablet_rarity": {
+          "display_name": "Rarity of Items",
+          "stat": "rarity",
+          "affix": "suffix",
+          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Rarity of Items found$",
+          "tiers": [
+            {"t": 1, "min": 36, "max": 40, "ilvl": 80},
+            {"t": 2, "min": 31, "max": 35, "ilvl": 72},
+            {"t": 3, "min": 26, "max": 30, "ilvl": 60},
+            {"t": 4, "min": 20, "max": 25, "ilvl": 50}
+          ]
+        },
+        "tablet_quantity": {
+          "display_name": "Quantity of Items",
+          "stat": "quantity",
+          "affix": "suffix",
+          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Quantity of Items found$",
+          "tiers": [
+            {"t": 1, "min": 16, "max": 20, "ilvl": 80},
+            {"t": 2, "min": 11, "max": 15, "ilvl": 72},
+            {"t": 3, "min": 6,  "max": 10, "ilvl": 60}
+          ]
+        },
+        "tablet_gold": {
+          "display_name": "Gold Found",
+          "stat": "gold",
+          "affix": "suffix",
+          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Gold found$",
+          "tiers": [
+            {"t": 1, "min": 41, "max": 50, "ilvl": 80},
+            {"t": 2, "min": 31, "max": 40, "ilvl": 68},
+            {"t": 3, "min": 21, "max": 30, "ilvl": 50}
+          ]
+        },
+        "tablet_experience": {
+          "display_name": "Experience Gain",
+          "stat": "experience",
+          "affix": "suffix",
+          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Experience gain$",
+          "tiers": [
+            {"t": 1, "min": 16, "max": 20, "ilvl": 80},
+            {"t": 2, "min": 11, "max": 15, "ilvl": 68}
+          ]
+        },
+        "tablet_rare_monsters": {
+          "display_name": "Rare Monsters",
+          "stat": "rare_monsters",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% more Rare Monsters$",
+          "tiers": [
+            {"t": 1, "min": 26, "max": 30, "ilvl": 80},
+            {"t": 2, "min": 21, "max": 25, "ilvl": 72},
+            {"t": 3, "min": 16, "max": 20, "ilvl": 60}
+          ]
+        },
+        "tablet_magic_monsters": {
+          "display_name": "Magic Monsters",
+          "stat": "magic_monsters",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% more Magic Monsters$",
+          "tiers": [
+            {"t": 1, "min": 51, "max": 60, "ilvl": 80},
+            {"t": 2, "min": 41, "max": 50, "ilvl": 68},
+            {"t": 3, "min": 31, "max": 40, "ilvl": 50}
+          ]
+        },
+        "tablet_breach": {
+          "display_name": "Contains Breach",
+          "stat": "breach",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range contain (?:a )?Breach$",
+          "tiers": [
+            {"t": 1, "min": 1, "max": 1, "ilvl": 72}
+          ]
+        },
+        "tablet_delirium": {
+          "display_name": "Contains Delirium",
+          "stat": "delirium",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range contain Delirium$",
+          "tiers": [
+            {"t": 1, "min": 1, "max": 1, "ilvl": 72}
+          ]
+        },
+        "tablet_ritual": {
+          "display_name": "Contains Ritual",
+          "stat": "ritual",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range contain Ritual Altars$",
+          "tiers": [
+            {"t": 1, "min": 1, "max": 1, "ilvl": 72}
+          ]
+        },
+        "tablet_expedition": {
+          "display_name": "Contains Expedition",
+          "stat": "expedition",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range contain an Expedition$",
+          "tiers": [
+            {"t": 1, "min": 1, "max": 1, "ilvl": 72}
+          ]
+        },
+        "tablet_essence": {
+          "display_name": "Contains Essence",
+          "stat": "essence",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range contain (?:an? )?Essenc(?:e|es)$",
+          "tiers": [
+            {"t": 1, "min": 1, "max": 1, "ilvl": 60}
+          ]
+        },
+        "tablet_strongbox": {
+          "display_name": "Contains Strongbox",
+          "stat": "strongbox",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range contain (?:a )?Strongbox$",
+          "tiers": [
+            {"t": 1, "min": 1, "max": 1, "ilvl": 55}
+          ]
+        },
+        "tablet_shrine": {
+          "display_name": "Contains Shrine",
+          "stat": "shrine",
+          "affix": "prefix",
+          "regex": "^(?:Waystones|Maps) in Range contain (?:a )?Shrine$",
+          "tiers": [
+            {"t": 1, "min": 1, "max": 1, "ilvl": 45}
+          ]
+        }
+      }
+    }
+  }
+}
