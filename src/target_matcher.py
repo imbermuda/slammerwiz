@@ -89,22 +89,56 @@ class Rule:
                 raise ValueError(f"unknown mod_id '{mod_id}' — not in catalog")
             pattern = mod.regex
             min_value = raw.get("min_value")
+            max_value = raw.get("max_value")
+            # Tier-range rules. PoE convention: T1 = highest stat values,
+            # T6 = lowest. So:
+            #   * ``min_tier`` = best (lowest number) acceptable tier
+            #   * ``max_tier`` = worst (highest number) acceptable tier
+            # When both are set: value floor = T(max_tier).min, ceiling
+            # = T(min_tier).max. When only one is set, fall back to the
+            # legacy single-floor semantic so old configs keep working.
             min_tier = raw.get("min_tier")
-            if min_value is None and min_tier is not None:
-                min_value = mod.min_value_for_tier(int(min_tier))
+            max_tier = raw.get("max_tier")
+            if min_tier is not None and max_tier is not None:
                 if min_value is None:
+                    min_value = mod.min_value_for_tier(int(max_tier))
+                if max_value is None:
+                    max_value = mod.max_value_for_tier(int(min_tier))
+                if min_value is None or max_value is None:
+                    raise ValueError(
+                        f"mod '{mod_id}' missing tier data for "
+                        f"T{min_tier}-T{max_tier}")
+            elif min_tier is not None and min_value is None:
+                # Legacy "at least this tier" — set the floor, no ceiling.
+                t_min = mod.min_value_for_tier(int(min_tier))
+                if t_min is None:
                     raise ValueError(f"mod '{mod_id}' has no tier {min_tier}")
-            name = raw.get("name") or (
-                f"{mod.display_name} T{min_tier}+" if min_tier else
-                f"{mod.display_name} {int(min_value)}+" if min_value is not None else
-                mod.display_name
-            )
+                min_value = t_min
+            elif max_tier is not None and min_value is None:
+                # "No worse than this tier" — also a floor (worst tier's min).
+                t_min = mod.min_value_for_tier(int(max_tier))
+                if t_min is None:
+                    raise ValueError(f"mod '{mod_id}' has no tier {max_tier}")
+                min_value = t_min
+            if raw.get("name"):
+                name = raw["name"]
+            elif min_tier is not None and max_tier is not None:
+                name = (f"{mod.display_name} T{min_tier}" if min_tier == max_tier
+                        else f"{mod.display_name} T{min_tier}-T{max_tier}")
+            elif min_tier is not None:
+                name = f"{mod.display_name} T{min_tier}+"
+            elif max_tier is not None:
+                name = f"{mod.display_name} T{max_tier}+"
+            elif min_value is not None:
+                name = f"{mod.display_name} {int(min_value)}+"
+            else:
+                name = mod.display_name
             return cls(
                 name=name,
                 regex=re.compile(pattern, re.IGNORECASE | re.MULTILINE),
                 regex_ws=re.compile(_strip_ws_pattern(pattern), re.IGNORECASE | re.MULTILINE),
                 min_value=min_value,
-                max_value=raw.get("max_value"),
+                max_value=max_value,
                 god_mod=bool(getattr(mod, "god_mod", False)),
                 required=required,
             )

@@ -1,0 +1,250 @@
+{
+  "catalog_version": "2026.06.02-bow-1.0",
+  "notes": "Bow catalog for PoE 2 patch 0.5. Tier ranges sourced from community references for shortbow/recurve/composite/warbow at base item levels. Magic bows = 1 prefix + 1 suffix; rare bows = 3 + 3. Slammer matches mod text + value ranges; ilvl filter is informational. Verify against poe2db before treating as authoritative.",
+  "items": {
+    "bow": {
+      "display_name": "Bow",
+      "implicits": [
+        "+#% Critical Hit Chance (implicit)"
+      ],
+      "mods": {
+        "bow_phys_pct": {
+          "display_name": "Physical Damage %",
+          "stat": "phys_damage_pct",
+          "affix": "prefix",
+          "regex": "^(?P<value>\\d+)% increased Physical Damage$",
+          "tiers": [
+            {"t": 1, "min": 155, "max": 169, "ilvl": 81},
+            {"t": 2, "min": 140, "max": 154, "ilvl": 73},
+            {"t": 3, "min": 125, "max": 139, "ilvl": 65},
+            {"t": 4, "min": 110, "max": 124, "ilvl": 56},
+            {"t": 5, "min": 90,  "max": 109, "ilvl": 45},
+            {"t": 6, "min": 70,  "max": 89,  "ilvl": 30}
+          ]
+        },
+        "bow_flat_phys": {
+          "display_name": "Flat Physical Damage",
+          "stat": "flat_phys",
+          "affix": "prefix",
+          "regex": "^Adds (?P<value>\\d+) to \\d+ Physical Damage$",
+          "tiers": [
+            {"t": 1, "min": 22, "max": 26, "ilvl": 81},
+            {"t": 2, "min": 18, "max": 21, "ilvl": 73},
+            {"t": 3, "min": 15, "max": 17, "ilvl": 65},
+            {"t": 4, "min": 11, "max": 14, "ilvl": 55},
+            {"t": 5, "min": 8,  "max": 10, "ilvl": 40},
+            {"t": 6, "min": 4,  "max": 7,  "ilvl": 20}
+          ]
+        },
+        "bow_lightning_flat": {
+          "display_name": "Adds Lightning Damage",
+          "stat": "lightning_flat",
+          "affix": "prefix",
+          "regex": "^Adds \\d+ to (?P<value>\\d+) Lightning Damage$",
+          "tiers": [
+            {"t": 1, "min": 60, "max": 70, "ilvl": 81},
+            {"t": 2, "min": 50, "max": 59, "ilvl": 73},
+            {"t": 3, "min": 40, "max": 49, "ilvl": 65},
+            {"t": 4, "min": 30, "max": 39, "ilvl": 55},
+            {"t": 5, "min": 18, "max": 29, "ilvl": 40},
+            {"t": 6, "min": 8,  "max": 17, "ilvl": 25}
+          ]
+        },
+        "bow_fire_flat": {
+          "display_name": "Adds Fire Damage",
+          "stat": "fire_flat",
+          "affix": "prefix",
+          "regex": "^Adds (?P<value>\\d+) to \\d+ Fire Damage$",
+          "tiers": [
+            {"t": 1, "min": 28, "max": 33, "ilvl": 81},
+            {"t": 2, "min": 22, "max": 27, "ilvl": 73},
+            {"t": 3, "min": 17, "max": 21, "ilvl": 65},
+            {"t": 4, "min": 12, "max": 16, "ilvl": 55},
+            {"t": 5, "min": 7,  "max": 11, "ilvl": 40},
+            {"t": 6, "min": 3,  "max": 6,  "ilvl": 25}
+          ]
+        },
+        "bow_cold_flat": {
+          "display_name": "Adds Cold Damage",
+          "stat": "cold_flat",
+          "affix": "prefix",
+          "regex": "^Adds (?P<value>\\d+) to \\d+ Cold Damage$",
+          "tiers": [
+            {"t": 1, "min": 23, "max": 28, "ilvl": 81},
+            {"t": 2, "min": 18, "max": 22, "ilvl": 73},
+            {"t": 3, "min": 14, "max": 17, "ilvl": 65},
+            {"t": 4, "min": 10, "max": 13, "ilvl": 55},
+            {"t": 5, "min": 6,  "max": 9,  "ilvl": 40},
+            {"t": 6, "min": 3,  "max": 5,  "ilvl": 25}
+          ]
+        },
+        "bow_chaos_flat": {
+          "display_name": "Adds Chaos Damage",
+          "stat": "chaos_flat",
+          "affix": "prefix",
+          "regex": "^Adds (?P<value>\\d+) to \\d+ Chaos Damage$",
+          "tiers": [
+            {"t": 1, "min": 18, "max": 22, "ilvl": 80},
+            {"t": 2, "min": 13, "max": 17, "ilvl": 68},
+            {"t": 3, "min": 8,  "max": 12, "ilvl": 50}
+          ]
+        },
+        "bow_attack_speed": {
+          "display_name": "Attack Speed",
+          "stat": "attack_speed",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Attack Speed$",
+          "tiers": [
+            {"t": 1, "min": 23, "max": 25, "ilvl": 77},
+            {"t": 2, "min": 20, "max": 22, "ilvl": 65},
+            {"t": 3, "min": 17, "max": 19, "ilvl": 55},
+            {"t": 4, "min": 14, "max": 16, "ilvl": 40},
+            {"t": 5, "min": 10, "max": 13, "ilvl": 25},
+            {"t": 6, "min": 5,  "max": 9,  "ilvl": 10}
+          ]
+        },
+        "bow_crit_chance_pct": {
+          "display_name": "Critical Hit Chance %",
+          "stat": "crit_chance_pct",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Critical Hit Chance$",
+          "tiers": [
+            {"t": 1, "min": 35, "max": 38, "ilvl": 78},
+            {"t": 2, "min": 30, "max": 34, "ilvl": 67},
+            {"t": 3, "min": 25, "max": 29, "ilvl": 55},
+            {"t": 4, "min": 20, "max": 24, "ilvl": 40},
+            {"t": 5, "min": 15, "max": 19, "ilvl": 25}
+          ]
+        },
+        "bow_crit_damage_bonus": {
+          "display_name": "Critical Damage Bonus",
+          "stat": "crit_damage_bonus",
+          "affix": "suffix",
+          "regex": "^\\+(?P<value>\\d+)% to Critical Damage Bonus$",
+          "tiers": [
+            {"t": 1, "min": 60, "max": 69, "ilvl": 80},
+            {"t": 2, "min": 50, "max": 59, "ilvl": 70},
+            {"t": 3, "min": 40, "max": 49, "ilvl": 55},
+            {"t": 4, "min": 30, "max": 39, "ilvl": 35},
+            {"t": 5, "min": 20, "max": 29, "ilvl": 20}
+          ]
+        },
+        "bow_lightning_pct": {
+          "display_name": "Lightning Damage %",
+          "stat": "lightning_pct",
+          "affix": "prefix",
+          "regex": "^(?P<value>\\d+)% increased Lightning Damage$",
+          "tiers": [
+            {"t": 1, "min": 35, "max": 39, "ilvl": 80},
+            {"t": 2, "min": 28, "max": 34, "ilvl": 70},
+            {"t": 3, "min": 20, "max": 27, "ilvl": 55}
+          ]
+        },
+        "bow_fire_pct": {
+          "display_name": "Fire Damage %",
+          "stat": "fire_pct",
+          "affix": "prefix",
+          "regex": "^(?P<value>\\d+)% increased Fire Damage$",
+          "tiers": [
+            {"t": 1, "min": 35, "max": 39, "ilvl": 80},
+            {"t": 2, "min": 28, "max": 34, "ilvl": 70},
+            {"t": 3, "min": 20, "max": 27, "ilvl": 55}
+          ]
+        },
+        "bow_cold_pct": {
+          "display_name": "Cold Damage %",
+          "stat": "cold_pct",
+          "affix": "prefix",
+          "regex": "^(?P<value>\\d+)% increased Cold Damage$",
+          "tiers": [
+            {"t": 1, "min": 35, "max": 39, "ilvl": 80},
+            {"t": 2, "min": 28, "max": 34, "ilvl": 70},
+            {"t": 3, "min": 20, "max": 27, "ilvl": 55}
+          ]
+        },
+        "bow_accuracy": {
+          "display_name": "Accuracy Rating",
+          "stat": "accuracy",
+          "affix": "suffix",
+          "regex": "^\\+(?P<value>\\d+) to Accuracy Rating$",
+          "tiers": [
+            {"t": 1, "min": 250, "max": 300, "ilvl": 75},
+            {"t": 2, "min": 180, "max": 249, "ilvl": 60},
+            {"t": 3, "min": 120, "max": 179, "ilvl": 45},
+            {"t": 4, "min": 60,  "max": 119, "ilvl": 25}
+          ]
+        },
+        "bow_life_leech": {
+          "display_name": "Life Leech",
+          "stat": "life_leech",
+          "affix": "suffix",
+          "regex": "^Leeches (?P<value>\\d+(?:\\.\\d+)?)% of Physical Attack Damage as Life$",
+          "tiers": [
+            {"t": 1, "min": 4, "max": 5, "ilvl": 80},
+            {"t": 2, "min": 2, "max": 3, "ilvl": 60},
+            {"t": 3, "min": 1, "max": 1, "ilvl": 40}
+          ]
+        },
+        "bow_mana_leech": {
+          "display_name": "Mana Leech",
+          "stat": "mana_leech",
+          "affix": "suffix",
+          "regex": "^Leeches (?P<value>\\d+(?:\\.\\d+)?)% of Physical Attack Damage as Mana$",
+          "tiers": [
+            {"t": 1, "min": 4, "max": 5, "ilvl": 75},
+            {"t": 2, "min": 2, "max": 3, "ilvl": 55},
+            {"t": 3, "min": 1, "max": 1, "ilvl": 35}
+          ]
+        },
+        "bow_attribute_dex": {
+          "display_name": "Dexterity",
+          "stat": "dexterity",
+          "affix": "suffix",
+          "regex": "^\\+(?P<value>\\d+) to Dexterity$",
+          "tiers": [
+            {"t": 1, "min": 25, "max": 30, "ilvl": 75},
+            {"t": 2, "min": 19, "max": 24, "ilvl": 60},
+            {"t": 3, "min": 13, "max": 18, "ilvl": 40},
+            {"t": 4, "min": 7,  "max": 12, "ilvl": 20}
+          ]
+        },
+        "bow_attribute_all": {
+          "display_name": "All Attributes",
+          "stat": "all_attributes",
+          "affix": "suffix",
+          "regex": "^\\+(?P<value>\\d+) to all Attributes$",
+          "tiers": [
+            {"t": 1, "min": 8, "max": 11, "ilvl": 70},
+            {"t": 2, "min": 5, "max": 7,  "ilvl": 50}
+          ]
+        },
+        "bow_gem_level_attack": {
+          "display_name": "Level of Attack Skills",
+          "stat": "gem_level_attack",
+          "affix": "prefix",
+          "regex": "^\\+(?P<value>\\d+) to Level of all Attack Skills$",
+          "tiers": [
+            {"t": 1, "min": 5, "max": 5, "ilvl": 84},
+            {"t": 2, "min": 4, "max": 4, "ilvl": 75},
+            {"t": 3, "min": 3, "max": 3, "ilvl": 60},
+            {"t": 4, "min": 2, "max": 2, "ilvl": 45},
+            {"t": 5, "min": 1, "max": 1, "ilvl": 25}
+          ]
+        },
+        "bow_gem_level_projectile": {
+          "display_name": "Level of Projectile Skills",
+          "stat": "gem_level_projectile",
+          "affix": "prefix",
+          "regex": "^\\+(?P<value>\\d+) to Level of all Projectile Skills$",
+          "tiers": [
+            {"t": 1, "min": 5, "max": 5, "ilvl": 84},
+            {"t": 2, "min": 4, "max": 4, "ilvl": 75},
+            {"t": 3, "min": 3, "max": 3, "ilvl": 60},
+            {"t": 4, "min": 2, "max": 2, "ilvl": 45},
+            {"t": 5, "min": 1, "max": 1, "ilvl": 25}
+          ]
+        }
+      }
+    }
+  }
+}

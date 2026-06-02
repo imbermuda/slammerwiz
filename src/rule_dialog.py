@@ -171,15 +171,28 @@ class RuleDialog(QDialog):
 
         mode_row = QHBoxLayout()
         self.mode_any   = QRadioButton("Any roll")
-        self.mode_tier  = QRadioButton("Min tier T")
+        self.mode_tier  = QRadioButton("Tier T")
         self.mode_value = QRadioButton("Min value ≥")
         self.mode_any.setChecked(True)
 
+        # Tier RANGE: pick a best (low number) and a worst (high number)
+        # tier. Lower tier number = higher stat values in PoE. So
+        # "T2 to T3" accepts rolls in T2 or T3, no T1 above, no T4 below.
         self.tier_spin = QSpinBox()
         self.tier_spin.setMinimum(1)
         self.tier_spin.setMaximum(20)
         self.tier_spin.setValue(1)
         self.tier_spin.setEnabled(False)
+        self.tier_spin.setToolTip("Best (highest-roll) tier accepted. Lower number = higher value range.")
+
+        self.tier_max_spin = QSpinBox()
+        self.tier_max_spin.setMinimum(1)
+        self.tier_max_spin.setMaximum(20)
+        self.tier_max_spin.setValue(1)
+        self.tier_max_spin.setEnabled(False)
+        self.tier_max_spin.setToolTip("Worst (lowest-roll) tier accepted. Use same value as the first spinbox to lock to a single tier.")
+
+        self.tier_dash = QLabel(" to T")
 
         self.value_spin = QSpinBox()
         self.value_spin.setMinimum(0)
@@ -190,6 +203,8 @@ class RuleDialog(QDialog):
         mode_row.addSpacing(6)
         mode_row.addWidget(self.mode_tier)
         mode_row.addWidget(self.tier_spin)
+        mode_row.addWidget(self.tier_dash)
+        mode_row.addWidget(self.tier_max_spin)
         mode_row.addSpacing(6)
         mode_row.addWidget(self.mode_value)
         mode_row.addWidget(self.value_spin)
@@ -199,7 +214,8 @@ class RuleDialog(QDialog):
         self.mode_any.toggled.connect(self._on_mode_changed)
         self.mode_tier.toggled.connect(self._on_mode_changed)
         self.mode_value.toggled.connect(self._on_mode_changed)
-        self.tier_spin.valueChanged.connect(self._refresh_preview)
+        self.tier_spin.valueChanged.connect(self._on_tier_min_changed)
+        self.tier_max_spin.valueChanged.connect(self._refresh_preview)
         self.value_spin.valueChanged.connect(self._refresh_preview)
 
         self.preview = QLabel("—")
@@ -256,13 +272,20 @@ class RuleDialog(QDialog):
         mod = self._current_mod()
         if not mod:
             self.tier_spin.setMaximum(1)
+            self.tier_max_spin.setMaximum(1)
             self.value_spin.setValue(0)
             self._refresh_preview()
             return
         tiers = mod.tiers_sorted()
         if tiers:
-            self.tier_spin.setMaximum(max(t.t for t in tiers))
-            self.tier_spin.setValue(min(t.t for t in tiers))
+            best = min(t.t for t in tiers)
+            worst = max(t.t for t in tiers)
+            self.tier_spin.setMinimum(best)
+            self.tier_spin.setMaximum(worst)
+            self.tier_spin.setValue(best)
+            self.tier_max_spin.setMinimum(best)
+            self.tier_max_spin.setMaximum(worst)
+            self.tier_max_spin.setValue(best)
             self.value_spin.setValue(int(tiers[0].min_value))
         else:
             suggested = mod.suggested_min_value()
@@ -279,8 +302,19 @@ class RuleDialog(QDialog):
             self.mode_tier.setEnabled(True)
         self._refresh_preview()
 
+    def _on_tier_min_changed(self) -> None:
+        """When the best (lower) tier number is bumped above the worst
+        (higher) tier number, drag the worst up with it. Lower-numbered
+        tiers must always be ≤ higher-numbered tiers."""
+        if self.tier_max_spin.value() < self.tier_spin.value():
+            self.tier_max_spin.setValue(self.tier_spin.value())
+        self._refresh_preview()
+
     def _on_mode_changed(self) -> None:
-        self.tier_spin.setEnabled(self.mode_tier.isChecked())
+        tier_on = self.mode_tier.isChecked()
+        self.tier_spin.setEnabled(tier_on)
+        self.tier_max_spin.setEnabled(tier_on)
+        self.tier_dash.setEnabled(tier_on)
         self.value_spin.setEnabled(self.mode_value.isChecked())
         self._refresh_preview()
 
@@ -296,12 +330,16 @@ class RuleDialog(QDialog):
         elif self.mode_value.isChecked():
             threshold = f"value ≥ {self.value_spin.value()}"
         elif self.mode_tier.isChecked() and mod.tiers:
-            t = self.tier_spin.value()
-            min_val = mod.min_value_for_tier(t)
-            if min_val is None:
-                threshold = f"T{t} (no catalog entry)"
+            t_min = self.tier_spin.value()
+            t_max = self.tier_max_spin.value()
+            v_floor = mod.min_value_for_tier(t_max)
+            v_ceil = mod.max_value_for_tier(t_min)
+            if v_floor is None or v_ceil is None:
+                threshold = f"T{t_min}-T{t_max} (incomplete catalog)"
+            elif t_min == t_max:
+                threshold = f"T{t_min} → value {int(v_floor)}-{int(v_ceil)}"
             else:
-                threshold = f"T{t}+ → value ≥ {int(min_val)}"
+                threshold = f"T{t_min}-T{t_max} → value {int(v_floor)}-{int(v_ceil)}"
         else:
             threshold = "any roll matches"
         god = "  ★ GOD MOD" if mod.god_mod else ""
@@ -328,6 +366,7 @@ class RuleDialog(QDialog):
             rule["min_value"] = self.value_spin.value()
         elif self.mode_tier.isChecked():
             rule["min_tier"] = self.tier_spin.value()
+            rule["max_tier"] = self.tier_max_spin.value()
         # else: mode_any — no threshold, matches any roll
         self.rules.append(rule)
         self._refresh_rules_list()
@@ -346,7 +385,11 @@ class RuleDialog(QDialog):
             if "mod_id" in rule:
                 mod = self.mod_db.get_mod(rule["mod_id"])
                 disp = mod.display_name if mod else rule["mod_id"]
-                if "min_tier" in rule:
+                if "min_tier" in rule and "max_tier" in rule:
+                    t_min = rule["min_tier"]; t_max = rule["max_tier"]
+                    threshold = (f"T{t_min}" if t_min == t_max
+                                 else f"T{t_min}-T{t_max}")
+                elif "min_tier" in rule:
                     threshold = f"T{rule['min_tier']}+"
                 elif "min_value" in rule:
                     threshold = f"value ≥ {rule['min_value']}"

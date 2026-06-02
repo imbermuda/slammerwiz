@@ -58,6 +58,12 @@ class Mod:
                 return tier.min_value
         return None
 
+    def max_value_for_tier(self, t: int) -> Optional[float]:
+        for tier in self.tiers:
+            if tier.t == t:
+                return tier.max_value
+        return None
+
     def tiers_sorted(self) -> List[ModTier]:
         return sorted(self.tiers, key=lambda x: x.t)
 
@@ -106,6 +112,11 @@ class ModDB:
         if version:
             self.catalog_version = version
         self._sources.append(source)
+        # Two-pass ingest: first read every item's own mods, then expand
+        # ``shares_prefixes_with`` references so each tablet type inherits
+        # the universal prefix pool from the base ``precursor_tablet``
+        # without duplicating ~14 mods into every type-specific entry.
+        share_map: Dict[str, str] = {}
         for item_id, item_data in (payload.get("items") or {}).items():
             if item_id not in self.items:
                 self.items[item_id] = ItemType(
@@ -122,6 +133,30 @@ class ModDB:
                     affix=mod_data.get("affix", "prefix"),
                     regex=mod_data["regex"],
                     tiers=[ModTier.from_dict(t) for t in (mod_data.get("tiers") or [])],
+                )
+            parent = item_data.get("shares_prefixes_with")
+            if parent:
+                share_map[item_id] = parent
+        # Second pass: pull every prefix-affix mod from the parent item
+        # into the child. Suffixes are type-specific and not shared.
+        for child_id, parent_id in share_map.items():
+            parent = self.items.get(parent_id)
+            child = self.items.get(child_id)
+            if not parent or not child:
+                continue
+            for mod_id, mod in parent.mods.items():
+                if mod.affix != "prefix":
+                    continue
+                if mod_id in child.mods:
+                    continue
+                child.mods[mod_id] = Mod(
+                    id=mod.id,
+                    item_id=child_id,
+                    display_name=mod.display_name,
+                    stat=mod.stat,
+                    affix=mod.affix,
+                    regex=mod.regex,
+                    tiers=list(mod.tiers),
                 )
 
     # --- queries -------------------------------------------------------

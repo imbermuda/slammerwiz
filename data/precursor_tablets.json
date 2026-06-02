@@ -1,149 +1,559 @@
 {
-  "catalog_version": "2026.04.23-seed-0",
-  "notes": "SEED values — verify every tier's min/max against poe2db.tw before using in production. Mod list is reasonably complete for Precursor Tablets in PoE 2 EA but patch updates land often.",
+  "catalog_version": "2026.06.02-1.1",
+  "notes": "Updated for PoE 2 patch 0.5 (Return of the Ancients). Mod text reflects current 'in Map' phrasing observed live in-game (May/June 2026). Tier ranges are best-effort: shared prefixes verified against community references; type-specific suffixes use representative ranges. Verify against poe2db.tw when in doubt.",
   "items": {
     "precursor_tablet": {
       "display_name": "Precursor Tablet",
+      "implicits": [
+        "Adds Irradiation to a Map (implicit)",
+        "10 uses remaining (implicit)"
+      ],
       "mods": {
-        "tablet_pack_size": {
-          "display_name": "Monster Pack Size",
-          "stat": "pack_size",
+        "tablet_quantity": {
+          "display_name": "Quantity of Items",
+          "stat": "quantity",
           "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Monster Pack Size$",
+          "regex": "^(?P<value>\\d+)% increased Quantity of Items found in Map$",
           "tiers": [
-            {"t": 1, "min": 17, "max": 20, "ilvl": 80},
-            {"t": 2, "min": 13, "max": 16, "ilvl": 72},
-            {"t": 3, "min": 9,  "max": 12, "ilvl": 60}
+            {"t": 1, "min": 5, "max": 7, "ilvl": 80},
+            {"t": 2, "min": 3, "max": 4, "ilvl": 60}
           ]
         },
         "tablet_rarity": {
           "display_name": "Rarity of Items",
           "stat": "rarity",
-          "affix": "suffix",
-          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Rarity of Items found$",
+          "affix": "prefix",
+          "regex": "^(?P<value>\\d+)% increased Rarity of Items found in Map$",
           "tiers": [
-            {"t": 1, "min": 36, "max": 40, "ilvl": 80},
-            {"t": 2, "min": 31, "max": 35, "ilvl": 72},
-            {"t": 3, "min": 26, "max": 30, "ilvl": 60},
-            {"t": 4, "min": 20, "max": 25, "ilvl": 50}
+            {"t": 1, "min": 22, "max": 30, "ilvl": 80},
+            {"t": 2, "min": 15, "max": 21, "ilvl": 65},
+            {"t": 3, "min": 10, "max": 14, "ilvl": 50}
           ]
         },
-        "tablet_quantity": {
-          "display_name": "Quantity of Items",
-          "stat": "quantity",
-          "affix": "suffix",
-          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Quantity of Items found$",
+        "tablet_pack_size": {
+          "display_name": "Pack Size",
+          "stat": "pack_size",
+          "affix": "prefix",
+          "regex": "^(?P<value>\\d+)% increased Pack Size in Map$",
           "tiers": [
-            {"t": 1, "min": 16, "max": 20, "ilvl": 80},
-            {"t": 2, "min": 11, "max": 15, "ilvl": 72},
-            {"t": 3, "min": 6,  "max": 10, "ilvl": 60}
-          ]
-        },
-        "tablet_gold": {
-          "display_name": "Gold Found",
-          "stat": "gold",
-          "affix": "suffix",
-          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Gold found$",
-          "tiers": [
-            {"t": 1, "min": 41, "max": 50, "ilvl": 80},
-            {"t": 2, "min": 31, "max": 40, "ilvl": 68},
-            {"t": 3, "min": 21, "max": 30, "ilvl": 50}
-          ]
-        },
-        "tablet_experience": {
-          "display_name": "Experience Gain",
-          "stat": "experience",
-          "affix": "suffix",
-          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% increased Experience gain$",
-          "tiers": [
-            {"t": 1, "min": 16, "max": 20, "ilvl": 80},
-            {"t": 2, "min": 11, "max": 15, "ilvl": 68}
+            {"t": 1, "min": 5, "max": 7, "ilvl": 80},
+            {"t": 2, "min": 3, "max": 4, "ilvl": 60}
           ]
         },
         "tablet_rare_monsters": {
           "display_name": "Rare Monsters",
           "stat": "rare_monsters",
           "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% more Rare Monsters$",
+          "regex": "^Map has (?P<value>\\d+)% increased number of Rare Monsters$",
           "tiers": [
-            {"t": 1, "min": 26, "max": 30, "ilvl": 80},
-            {"t": 2, "min": 21, "max": 25, "ilvl": 72},
-            {"t": 3, "min": 16, "max": 20, "ilvl": 60}
+            {"t": 1, "min": 22, "max": 30, "ilvl": 80},
+            {"t": 2, "min": 15, "max": 21, "ilvl": 65},
+            {"t": 3, "min": 10, "max": 14, "ilvl": 50}
           ]
         },
         "tablet_magic_monsters": {
           "display_name": "Magic Monsters",
           "stat": "magic_monsters",
           "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range have (?P<value>\\d+)% more Magic Monsters$",
+          "regex": "^Map has (?P<value>\\d+)% increased number of Magic Monsters$",
           "tiers": [
-            {"t": 1, "min": 51, "max": 60, "ilvl": 80},
-            {"t": 2, "min": 41, "max": 50, "ilvl": 68},
-            {"t": 3, "min": 31, "max": 40, "ilvl": 50}
+            {"t": 1, "min": 20, "max": 30, "ilvl": 80},
+            {"t": 2, "min": 15, "max": 19, "ilvl": 65}
           ]
         },
-        "tablet_breach": {
-          "display_name": "Contains Breach",
-          "stat": "breach",
+        "tablet_gold": {
+          "display_name": "Gold Found",
+          "stat": "gold",
           "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range contain (?:a )?Breach$",
+          "regex": "^(?P<value>\\d+)% increased Gold found in Map$",
           "tiers": [
-            {"t": 1, "min": 1, "max": 1, "ilvl": 72}
+            {"t": 1, "min": 30, "max": 50, "ilvl": 80},
+            {"t": 2, "min": 20, "max": 29, "ilvl": 60}
           ]
         },
-        "tablet_delirium": {
-          "display_name": "Contains Delirium",
-          "stat": "delirium",
+        "tablet_experience": {
+          "display_name": "Experience Gain",
+          "stat": "experience",
           "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range contain Delirium$",
+          "regex": "^(?P<value>\\d+)% increased Experience gain in Map$",
           "tiers": [
-            {"t": 1, "min": 1, "max": 1, "ilvl": 72}
+            {"t": 1, "min": 8, "max": 12, "ilvl": 80},
+            {"t": 2, "min": 5, "max": 7, "ilvl": 60}
           ]
         },
-        "tablet_ritual": {
-          "display_name": "Contains Ritual",
-          "stat": "ritual",
-          "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range contain Ritual Altars$",
+        "tablet_waystone_qty": {
+          "display_name": "Quantity of Waystones",
+          "stat": "waystone_quantity",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Quantity of Waystones found in Map$",
           "tiers": [
-            {"t": 1, "min": 1, "max": 1, "ilvl": 72}
-          ]
-        },
-        "tablet_expedition": {
-          "display_name": "Contains Expedition",
-          "stat": "expedition",
-          "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range contain an Expedition$",
-          "tiers": [
-            {"t": 1, "min": 1, "max": 1, "ilvl": 72}
-          ]
-        },
-        "tablet_essence": {
-          "display_name": "Contains Essence",
-          "stat": "essence",
-          "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range contain (?:an? )?Essenc(?:e|es)$",
-          "tiers": [
-            {"t": 1, "min": 1, "max": 1, "ilvl": 60}
-          ]
-        },
-        "tablet_strongbox": {
-          "display_name": "Contains Strongbox",
-          "stat": "strongbox",
-          "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range contain (?:a )?Strongbox$",
-          "tiers": [
-            {"t": 1, "min": 1, "max": 1, "ilvl": 55}
+            {"t": 1, "min": 15, "max": 20, "ilvl": 80},
+            {"t": 2, "min": 10, "max": 14, "ilvl": 60}
           ]
         },
         "tablet_shrine": {
           "display_name": "Contains Shrine",
           "stat": "shrine",
-          "affix": "prefix",
-          "regex": "^(?:Waystones|Maps) in Range contain (?:a )?Shrine$",
+          "affix": "suffix",
+          "regex": "^Map contains an additional Shrine$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 45}]
+        },
+        "tablet_strongbox": {
+          "display_name": "Contains Strongbox",
+          "stat": "strongbox",
+          "affix": "suffix",
+          "regex": "^Map contains an additional Strongbox$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 55}]
+        },
+        "tablet_essence": {
+          "display_name": "Contains Essence",
+          "stat": "essence",
+          "affix": "suffix",
+          "regex": "^Map contains an additional Essence$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 60}]
+        },
+        "tablet_azmeri": {
+          "display_name": "Contains Azmeri Spirit",
+          "stat": "azmeri",
+          "affix": "suffix",
+          "regex": "^Map contains an additional Azmeri Spirit$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 65}]
+        },
+        "tablet_rogue_exile": {
+          "display_name": "Contains Rogue Exile",
+          "stat": "rogue_exile",
+          "affix": "suffix",
+          "regex": "^Map contains an additional Rogue Exile$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 50}]
+        },
+        "tablet_extra_modifier": {
+          "display_name": "Additional Modifier on Map",
+          "stat": "extra_modifier",
+          "affix": "suffix",
+          "regex": "^Map has 1 additional random Modifier$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 75}]
+        }
+      }
+    },
+
+    "breach_precursor_tablet": {
+      "display_name": "Breach Precursor Tablet",
+      "implicits": [
+        "Adds a Breach to a Map (implicit)",
+        "10 uses remaining (implicit)"
+      ],
+      "shares_prefixes_with": "precursor_tablet",
+      "mods": {
+        "breach_magic_monsters": {
+          "display_name": "Breach Magic Monsters",
+          "stat": "breach_magic_monsters",
+          "affix": "suffix",
+          "regex": "^Breaches in Map spawn (?P<value>\\d+)% increased Magic Monsters$",
           "tiers": [
-            {"t": 1, "min": 1, "max": 1, "ilvl": 45}
+            {"t": 1, "min": 20, "max": 25, "ilvl": 80},
+            {"t": 2, "min": 15, "max": 19, "ilvl": 65}
           ]
+        },
+        "breach_rare_monsters": {
+          "display_name": "Breach Rare Monsters",
+          "stat": "breach_rare_monsters",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+) additional Rare Monsters are spawned from Breaches in Map$",
+          "tiers": [{"t": 1, "min": 1, "max": 2, "ilvl": 70}]
+        },
+        "breach_density": {
+          "display_name": "Breach Monster Density",
+          "stat": "breach_density",
+          "affix": "suffix",
+          "regex": "^Breaches in Map have (?P<value>\\d+)% increased Monster density$",
+          "tiers": [
+            {"t": 1, "min": 4, "max": 6, "ilvl": 80},
+            {"t": 2, "min": 2, "max": 3, "ilvl": 60}
+          ]
+        },
+        "breach_speed": {
+          "display_name": "Breach Open/Close Speed",
+          "stat": "breach_speed",
+          "affix": "suffix",
+          "regex": "^Breaches in Map open and close (?P<value>\\d+)% faster$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 65}]
+        },
+        "breach_clasped_hand": {
+          "display_name": "Additional Clasped Hand",
+          "stat": "breach_clasped_hand",
+          "affix": "suffix",
+          "regex": "^Breaches in Map contain 1 additional Clasped Hand$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 75}]
+        },
+        "breach_splinter_qty": {
+          "display_name": "Breach Splinter Quantity",
+          "stat": "breach_splinter_qty",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Quantity of Breach Splinters dropped by Breach Monsters in Map$",
+          "tiers": [
+            {"t": 1, "min": 5, "max": 10, "ilvl": 80},
+            {"t": 2, "min": 3, "max": 4, "ilvl": 60}
+          ]
+        },
+        "breach_extra_three": {
+          "display_name": "Chance for 3 Additional Breaches",
+          "stat": "breach_extra_three",
+          "affix": "suffix",
+          "regex": "^Maps which contain Breaches have (?P<value>\\d+)% chance to contain three additional Breaches$",
+          "tiers": [{"t": 1, "min": 2, "max": 4, "ilvl": 80}]
+        },
+        "breach_extra_one": {
+          "display_name": "Chance for Additional Breach",
+          "stat": "breach_extra_one",
+          "affix": "suffix",
+          "regex": "^Maps which contain Breaches have (?P<value>\\d+)% chance to contain an additional Breach$",
+          "tiers": [
+            {"t": 1, "min": 7, "max": 10, "ilvl": 75},
+            {"t": 2, "min": 5, "max": 6, "ilvl": 60}
+          ]
+        }
+      }
+    },
+
+    "delirium_precursor_tablet": {
+      "display_name": "Delirium Precursor Tablet",
+      "implicits": [
+        "Adds a Mirror of Delirium to a Map (implicit)",
+        "10 uses remaining (implicit)"
+      ],
+      "shares_prefixes_with": "precursor_tablet",
+      "mods": {
+        "delirium_splinter_stack": {
+          "display_name": "Simulacrum Splinter Stack Size",
+          "stat": "delirium_splinter_stack",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Stack size of Simulacrum Splinters found in Map$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 75}]
+        },
+        "delirium_reward_progress": {
+          "display_name": "Delirium Reward Progress",
+          "stat": "delirium_reward_progress",
+          "affix": "suffix",
+          "regex": "^Delirious Monsters Killed in Map provide (?P<value>\\d+)% increased Reward Progress$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 70}]
+        },
+        "delirium_fog_seconds": {
+          "display_name": "Delirium Fog Duration",
+          "stat": "delirium_fog_seconds",
+          "affix": "suffix",
+          "regex": "^Delirium Fog in Map lasts (?P<value>\\d+) additional seconds before dissipating$",
+          "tiers": [{"t": 1, "min": 3, "max": 6, "ilvl": 65}]
+        },
+        "delirium_fog_slower": {
+          "display_name": "Delirium Fog Dissipates Slower",
+          "stat": "delirium_fog_slower",
+          "affix": "suffix",
+          "regex": "^Delirium Fog in Map dissipates (?P<value>\\d+)% slower$",
+          "tiers": [
+            {"t": 1, "min": 25, "max": 30, "ilvl": 80},
+            {"t": 2, "min": 15, "max": 24, "ilvl": 60}
+          ]
+        },
+        "delirium_distance_faster": {
+          "display_name": "Delirium % Faster With Distance",
+          "stat": "delirium_distance_faster",
+          "affix": "suffix",
+          "regex": "^Delirium in Map increases (?P<value>\\d+)% faster with distance from the Mirror$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 70}]
+        },
+        "delirium_monster_packsize": {
+          "display_name": "Delirium Monster Pack Size",
+          "stat": "delirium_monster_packsize",
+          "affix": "suffix",
+          "regex": "^Delirium Monsters in Map have (?P<value>\\d+)% increased Pack Size$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 75}]
+        },
+        "delirium_unique_boss": {
+          "display_name": "Delirium Unique Boss Chance",
+          "stat": "delirium_unique_boss",
+          "affix": "suffix",
+          "regex": "^Delirium Encounters in Map are (?P<value>\\d+)% more likely to spawn Unique Bosses$",
+          "tiers": [
+            {"t": 1, "min": 15, "max": 20, "ilvl": 80},
+            {"t": 2, "min": 5, "max": 14, "ilvl": 60}
+          ]
+        },
+        "delirium_extra_reward": {
+          "display_name": "Delirium Additional Reward Type",
+          "stat": "delirium_extra_reward",
+          "affix": "suffix",
+          "regex": "^Delirium Encounters in Map have (?P<value>\\d+)% chance to generate an additional Reward type$",
+          "tiers": [{"t": 1, "min": 3, "max": 8, "ilvl": 75}]
+        }
+      }
+    },
+
+    "expedition_precursor_tablet": {
+      "display_name": "Expedition Precursor Tablet",
+      "implicits": [
+        "Adds an Expedition Encounter to a Map (implicit)",
+        "10 uses remaining (implicit)"
+      ],
+      "shares_prefixes_with": "precursor_tablet",
+      "mods": {
+        "expedition_artifact_qty": {
+          "display_name": "Artifact Quantity",
+          "stat": "expedition_artifact_qty",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased quantity of Artifacts dropped by Monsters in Map$",
+          "tiers": [
+            {"t": 1, "min": 7, "max": 10, "ilvl": 80},
+            {"t": 2, "min": 5, "max": 6, "ilvl": 60}
+          ]
+        },
+        "expedition_explosive_range": {
+          "display_name": "Explosive Placement Range",
+          "stat": "expedition_explosive_range",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Explosive Placement Range in Map$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 60}]
+        },
+        "expedition_remnant_extra": {
+          "display_name": "Additional Remnant",
+          "stat": "expedition_remnant_extra",
+          "affix": "suffix",
+          "regex": "^Expeditions in Map have \\+1 Remnant$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 75}]
+        },
+        "expedition_explosive_radius": {
+          "display_name": "Explosive Radius",
+          "stat": "expedition_explosive_radius",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Explosive Radius in Map$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 60}]
+        },
+        "expedition_logbook_qty": {
+          "display_name": "Logbook Quantity",
+          "stat": "expedition_logbook_qty",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Quantity of Expedition Logbooks dropped by Runic Monsters in Map$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 80}]
+        },
+        "expedition_rare_runic": {
+          "display_name": "Rare Expedition Monsters",
+          "stat": "expedition_rare_runic",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased number of Rare Expedition Monsters in Map$",
+          "tiers": [{"t": 1, "min": 10, "max": 15, "ilvl": 75}]
+        },
+        "expedition_remnant_effect": {
+          "display_name": "Remnant Effect",
+          "stat": "expedition_remnant_effect",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Effect of Remnants in Map$",
+          "tiers": [{"t": 1, "min": 3, "max": 6, "ilvl": 70}]
+        },
+        "expedition_runic_markers": {
+          "display_name": "Runic Monster Markers",
+          "stat": "expedition_runic_markers",
+          "affix": "suffix",
+          "regex": "^Map contains (?P<value>\\d+)% increased number of Runic Monster Markers$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 70}]
+        }
+      }
+    },
+
+    "ritual_precursor_tablet": {
+      "display_name": "Ritual Precursor Tablet",
+      "implicits": [
+        "Adds a Ritual Altar to a Map (implicit)",
+        "10 uses remaining (implicit)"
+      ],
+      "shares_prefixes_with": "precursor_tablet",
+      "mods": {
+        "ritual_tribute": {
+          "display_name": "Tribute From Sacrificed Monsters",
+          "stat": "ritual_tribute",
+          "affix": "suffix",
+          "regex": "^Monsters Sacrificed at Ritual Altars in Map grant (?P<value>\\d+)% increased Tribute$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 70}]
+        },
+        "ritual_reroll_cost": {
+          "display_name": "Reroll Cost Reduction",
+          "stat": "ritual_reroll_cost",
+          "affix": "suffix",
+          "regex": "^Rerolling Favours at Ritual Altars in Map costs (?P<value>\\d+)% reduced Tribute$",
+          "tiers": [{"t": 1, "min": 10, "max": 15, "ilvl": 65}]
+        },
+        "ritual_defer_cost": {
+          "display_name": "Defer Cost Reduction",
+          "stat": "ritual_defer_cost",
+          "affix": "suffix",
+          "regex": "^Deferring Favours at Ritual Altars in Map costs (?P<value>\\d+)% reduced Tribute$",
+          "tiers": [{"t": 1, "min": 10, "max": 15, "ilvl": 65}]
+        },
+        "ritual_defer_sooner": {
+          "display_name": "Deferred Favours Sooner",
+          "stat": "ritual_defer_sooner",
+          "affix": "suffix",
+          "regex": "^Favours Deferred at Ritual Altars in Map reappear (?P<value>\\d+)% sooner$",
+          "tiers": [{"t": 1, "min": 10, "max": 15, "ilvl": 70}]
+        },
+        "ritual_extra_reroll": {
+          "display_name": "Additional Reroll",
+          "stat": "ritual_extra_reroll",
+          "affix": "suffix",
+          "regex": "^Ritual Altars in Map allow rerolling Favours an additional time$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 75}]
+        },
+        "ritual_free_reroll": {
+          "display_name": "Free Reroll Chance",
+          "stat": "ritual_free_reroll",
+          "affix": "suffix",
+          "regex": "^Favours Rerolled at Ritual Altars in Map have (?P<value>\\d+)% chance to cost no Tribute$",
+          "tiers": [{"t": 1, "min": 1, "max": 3, "ilvl": 80}]
+        },
+        "ritual_revived_magic": {
+          "display_name": "Revived Magic Monsters",
+          "stat": "ritual_revived_magic",
+          "affix": "suffix",
+          "regex": "^Revived Monsters from Ritual Altars in Map have (?P<value>\\d+)% increased chance to be Magic$",
+          "tiers": [{"t": 1, "min": 15, "max": 25, "ilvl": 65}]
+        },
+        "ritual_revived_rare": {
+          "display_name": "Revived Rare Monsters",
+          "stat": "ritual_revived_rare",
+          "affix": "suffix",
+          "regex": "^Revived Monsters from Ritual Altars in Map have (?P<value>\\d+)% increased chance to be Rare$",
+          "tiers": [{"t": 1, "min": 10, "max": 15, "ilvl": 75}]
+        },
+        "ritual_omen_chance": {
+          "display_name": "Favours as Omens",
+          "stat": "ritual_omen_chance",
+          "affix": "suffix",
+          "regex": "^Ritual Favours in Map have (?P<value>\\d+)% increased chance to be Omens$",
+          "tiers": [{"t": 1, "min": 15, "max": 25, "ilvl": 80}]
+        }
+      }
+    },
+
+    "overseer_precursor_tablet": {
+      "display_name": "Overseer Precursor Tablet",
+      "implicits": [
+        "Map contains a Boss (implicit)",
+        "10 uses remaining (implicit)"
+      ],
+      "shares_prefixes_with": "precursor_tablet",
+      "mods": {
+        "overseer_extra_strongbox": {
+          "display_name": "Boss Areas Contain Strongbox",
+          "stat": "overseer_extra_strongbox",
+          "affix": "suffix",
+          "regex": "^Areas with Map Bosses contain an additional Strongbox$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 65}]
+        },
+        "overseer_extra_shrine": {
+          "display_name": "Boss Areas Contain Shrine",
+          "stat": "overseer_extra_shrine",
+          "affix": "suffix",
+          "regex": "^Areas with Map Bosses contain an additional Shrine$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 55}]
+        },
+        "overseer_extra_essence": {
+          "display_name": "Boss Areas Contain Essence",
+          "stat": "overseer_extra_essence",
+          "affix": "suffix",
+          "regex": "^Areas with Map Bosses contain an additional Essence$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 65}]
+        },
+        "overseer_extra_azmeri": {
+          "display_name": "Boss Areas Contain Azmeri Spirit",
+          "stat": "overseer_extra_azmeri",
+          "affix": "suffix",
+          "regex": "^Areas with Map Bosses contain an additional Azmeri Spirit$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 70}]
+        },
+        "overseer_waystone_qty": {
+          "display_name": "Boss Waystone Quantity",
+          "stat": "overseer_waystone_qty",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Quantity of Waystones dropped by Map Bosses$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 75}]
+        },
+        "overseer_boss_exp": {
+          "display_name": "Boss Experience",
+          "stat": "overseer_boss_exp",
+          "affix": "suffix",
+          "regex": "^Map Bosses grant (?P<value>\\d+)% increased Experience$",
+          "tiers": [{"t": 1, "min": 20, "max": 40, "ilvl": 75}]
+        },
+        "overseer_boss_rarity": {
+          "display_name": "Boss Loot Rarity",
+          "stat": "overseer_boss_rarity",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Rarity of Items dropped by Map Bosses$",
+          "tiers": [{"t": 1, "min": 15, "max": 25, "ilvl": 80}]
+        },
+        "overseer_boss_quantity": {
+          "display_name": "Boss Loot Quantity",
+          "stat": "overseer_boss_quantity",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Quantity of Items dropped by Map Bosses$",
+          "tiers": [{"t": 1, "min": 10, "max": 15, "ilvl": 80}]
+        }
+      }
+    },
+
+    "abyss_precursor_tablet": {
+      "display_name": "Abyss Precursor Tablet",
+      "implicits": [
+        "Adds Abysses to a Map (implicit)",
+        "10 uses remaining (implicit)"
+      ],
+      "shares_prefixes_with": "precursor_tablet",
+      "mods": {
+        "abyss_additional": {
+          "display_name": "Additional Abyss",
+          "stat": "abyss_additional",
+          "affix": "suffix",
+          "regex": "^Map contains an additional Abyss$",
+          "tiers": [{"t": 1, "min": 1, "max": 1, "ilvl": 70}]
+        },
+        "abyss_rare_extra": {
+          "display_name": "Abyss Rare Monsters",
+          "stat": "abyss_rare_extra",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+) additional Rare Monsters are spawned from Abysses in Map$",
+          "tiers": [{"t": 1, "min": 1, "max": 2, "ilvl": 75}]
+        },
+        "abyss_packsize": {
+          "display_name": "Abyss Pack Size",
+          "stat": "abyss_packsize",
+          "affix": "suffix",
+          "regex": "^Abysses in Map spawn (?P<value>\\d+)% increased Monsters$",
+          "tiers": [
+            {"t": 1, "min": 18, "max": 25, "ilvl": 80},
+            {"t": 2, "min": 10, "max": 17, "ilvl": 60}
+          ]
+        },
+        "abyss_depths_chance": {
+          "display_name": "Abyssal Depths Chance",
+          "stat": "abyss_depths_chance",
+          "affix": "suffix",
+          "regex": "^Abysses in Map have (?P<value>\\d+)% increased chance to lead to an Abyssal Depths$",
+          "tiers": [
+            {"t": 1, "min": 15, "max": 20, "ilvl": 80},
+            {"t": 2, "min": 8, "max": 14, "ilvl": 60}
+          ]
+        },
+        "abyss_jewel_qty": {
+          "display_name": "Abyss Jewel Quantity",
+          "stat": "abyss_jewel_qty",
+          "affix": "suffix",
+          "regex": "^(?P<value>\\d+)% increased Quantity of Abyss Jewels dropped by Abyss Monsters in Map$",
+          "tiers": [{"t": 1, "min": 5, "max": 10, "ilvl": 75}]
+        },
+        "abyss_lich_chance": {
+          "display_name": "Abyssal Lich Chance",
+          "stat": "abyss_lich_chance",
+          "affix": "suffix",
+          "regex": "^Abysses in Map have (?P<value>\\d+)% chance to spawn an Abyssal Lich$",
+          "tiers": [{"t": 1, "min": 3, "max": 6, "ilvl": 80}]
         }
       }
     }
