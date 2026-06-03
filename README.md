@@ -69,6 +69,8 @@ Output lands in `dist\SlammerWiz.exe`.
 
 ## Status
 
+**v1.1** - empty-catalog fallback hardening; treats "API returned zero mods" as no-data and falls through to cache → shipped fallback instead of leaving the user with 0 mods.
+
 **v1.0** - clipboard-only architecture, six guard invariant tests green, validated on PoE 2 Fate of the Vaal league.
 
 ## License

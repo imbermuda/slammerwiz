@@ -233,7 +233,7 @@ class App:
         self.user_tag = sess.get("user_tag")
         self.league = sess.get("league")
         self.patch = sess.get("patch")
-        self.client_version = sess.get("client_version", "chaoswiz/0.1.0")
+        self.client_version = sess.get("client_version", "chaoswiz/0.1.1")
         self.source_hash = _ensure_source_hash(cfg)
 
         # --- catalog ---
