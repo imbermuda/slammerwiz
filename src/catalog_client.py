@@ -30,6 +30,7 @@ SLOT_TO_ITEM_ID = {
     "Tablet":   ("precursor_tablet",   "Precursor Tablet"),
     "Waystone": ("waystone",           "Waystone"),
     "Jewel":    ("jewel",              "Jewel"),
+    "Bow":      ("bow",                "Bow"),
 }
 
 
