@@ -63,23 +63,35 @@ class CatalogClient:
     # --- public --------------------------------------------------------
 
     def load(self) -> ModDB:
+        # Helper: a DB with zero mods is useless — treat it as "no data"
+        # and continue down the fallback chain. The remote API can
+        # legitimately return an empty entries list while still being
+        # "up" (e.g. league reset, slot filter mismatch, freshly-deployed
+        # server with no aggregated data yet). Without this check, users
+        # see "0 mods loaded" and can't add any rule.
+        def _empty(db: Optional[ModDB]) -> bool:
+            return db is None or not any(it.mods for it in db.items.values())
+
         if self._cache_fresh():
             db = self._load_cache()
-            if db is not None:
+            if not _empty(db):
                 self.last_source = "cache"
-                return db
+                return db  # type: ignore[return-value]
         try:
             payload = self._fetch()
-            self._save_cache(payload)
-            self.last_source = "remote"
-            return self._db_from_payload(payload)
+            db = self._db_from_payload(payload)
+            if not _empty(db):
+                self._save_cache(payload)
+                self.last_source = "remote"
+                return db
+            self.last_error = "remote returned empty entries"
         except Exception as e:
             self.last_error = f"{type(e).__name__}: {e}"
 
         db = self._load_cache()
-        if db is not None:
+        if not _empty(db):
             self.last_source = "cache (stale)"
-            return db
+            return db  # type: ignore[return-value]
 
         self.last_source = "shipped fallback"
         return ModDB.load(self.fallback_dir)
