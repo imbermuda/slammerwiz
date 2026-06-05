@@ -92,9 +92,21 @@ APP_NAME = "SlammerWiz"
 
 
 def _app_dir() -> Path:
+    """Where config.json lives — next to the .exe / next to repo root."""
     if getattr(sys, "frozen", False):
         return Path(sys.executable).resolve().parent
     return Path(__file__).resolve().parent.parent
+
+
+def _bundled_data_dir() -> Path:
+    """Where shipped read-only `data/` lives. In PyInstaller onefile this is
+    the runtime extract dir (``sys._MEIPASS``); in source / onedir it's
+    next to the .exe / repo root."""
+    if getattr(sys, "frozen", False):
+        meipass = getattr(sys, "_MEIPASS", None)
+        if meipass:
+            return Path(meipass) / "data"
+    return _app_dir() / "data"
 
 
 def _data_dir() -> Path:
@@ -111,7 +123,24 @@ def _config_path() -> Path:
 def load_config() -> dict:
     p = _config_path()
     if not p.exists():
-        raise SystemExit(f"Missing config.json at {p}")
+        # First-run bootstrap: copy the bundled default template next to the
+        # .exe (or to repo root in dev) so the user has an editable file.
+        template = _bundled_data_dir().parent / "config.default.json"
+        if template.exists():
+            try:
+                import secrets, shutil
+                with template.open("r", encoding="utf-8") as f:
+                    cfg = json.load(f)
+                # Each install gets its own anonymisation salt.
+                cfg.setdefault("session", {})["account_salt"] = secrets.token_hex(16)
+                p.parent.mkdir(parents=True, exist_ok=True)
+                with p.open("w", encoding="utf-8") as f:
+                    json.dump(cfg, f, indent=2)
+                print(f"[config] first run — wrote default config to {p}")
+            except Exception as e:
+                raise SystemExit(f"Could not bootstrap config.json: {e}")
+        else:
+            raise SystemExit(f"Missing config.json at {p} and no bundled template found.")
     # If the primary file is corrupt, fall back to the last-known-good backup.
     for candidate in (p, p.with_suffix(p.suffix + ".bak")):
         if not candidate.exists():
@@ -233,7 +262,7 @@ class App:
         self.user_tag = sess.get("user_tag")
         self.league = sess.get("league")
         self.patch = sess.get("patch")
-        self.client_version = sess.get("client_version", "chaoswiz/0.1.1")
+        self.client_version = sess.get("client_version", "chaoswiz/0.1.2")
         self.source_hash = _ensure_source_hash(cfg)
 
         # --- catalog ---
@@ -242,7 +271,7 @@ class App:
             endpoint=api.get("catalog_endpoint",
                              "https://poewiz-api.fly.dev/stats/mod-catalog"),
             cache_path=_data_dir() / "catalog_cache.json",
-            fallback_dir=_app_dir() / "data",
+            fallback_dir=_bundled_data_dir(),
             ttl_sec=int(api.get("catalog_ttl_sec", 21600)),
             api_key=api.get("api_key", ""),
             slot=api.get("catalog_slot", "Tablet"),

@@ -169,6 +169,18 @@ class RuleDialog(QDialog):
         _make_searchable(self.mod_combo)
         form.addRow("Mod:", self.mod_combo)
 
+        # God-mod filter: when checked (default), the dropdown only shows
+        # server-flagged ★ god mods — the high-value rolls. Uncheck to
+        # browse the full pool including niche / low-tier rolls.
+        self.god_only = QCheckBox("Show only ★ god mods")
+        self.god_only.setChecked(False)
+        self.god_only.setToolTip(
+            "When on, the mod list only shows entries the server flagged as god_mod=true. "
+            "Turn off to browse every roll on this item type."
+        )
+        self.god_only.toggled.connect(self._on_item_changed)
+        form.addRow("", self.god_only)
+
         mode_row = QHBoxLayout()
         self.mode_any   = QRadioButton("Any roll")
         self.mode_tier  = QRadioButton("Tier T")
@@ -255,11 +267,23 @@ class RuleDialog(QDialog):
             le.clear()
         if not item_id:
             return
+        god_only = getattr(self, "god_only", None)
+        filter_god = god_only.isChecked() if god_only is not None else False
+        shown = 0
         for mod in self.mod_db.mods_for(item_id):
+            if filter_god and not mod.god_mod:
+                continue
             prefix = "★ " if mod.god_mod else ""
             observed = f" · n={mod.n_observed}" if mod.n_observed else ""
             label = f"{prefix}{mod.display_name}{observed}"
             self.mod_combo.addItem(label, userData=mod.id)
+            shown += 1
+        if filter_god and shown == 0:
+            # No god mods on this item type — fall through to full pool so
+            # the dropdown is never empty.
+            for mod in self.mod_db.mods_for(item_id):
+                observed = f" · n={mod.n_observed}" if mod.n_observed else ""
+                self.mod_combo.addItem(f"{mod.display_name}{observed}", userData=mod.id)
         self._on_mod_changed()
 
     def _current_mod(self) -> Optional[Mod]:

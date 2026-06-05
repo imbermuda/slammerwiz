@@ -31,6 +31,8 @@ SLOT_TO_ITEM_ID = {
     "Waystone": ("waystone",           "Waystone"),
     "Jewel":    ("jewel",              "Jewel"),
     "Bow":      ("bow",                "Bow"),
+    "Amulet":   ("amulet",             "Amulet"),
+    "Ring":     ("ring",               "Ring"),
 }
 
 
@@ -121,7 +123,7 @@ class CatalogClient:
     # --- remote --------------------------------------------------------
 
     def _fetch(self) -> dict:
-        headers = {"User-Agent": "SlammerWiz/1.0", "Accept": "application/json"}
+        headers = {"User-Agent": "SlammerWiz/1.2", "Accept": "application/json"}
         params: dict = {"min_observed": self.min_observed,
                         "window_hours": self.window_hours}
         if self.slot:
@@ -130,17 +132,23 @@ class CatalogClient:
             params["category"] = self.category
         if self.league:
             params["league"] = self.league
-        resp = requests.get(self.endpoint, headers=headers, params=params, timeout=8)
+        resp = requests.get(self.endpoint, headers=headers, params=params, timeout=20)
         resp.raise_for_status()
         return resp.json()
 
     # --- payload → ModDB ----------------------------------------------
 
     @staticmethod
-    def _item_id_for(slot: Optional[str]) -> tuple[str, str]:
-        if slot and slot in SLOT_TO_ITEM_ID:
-            return SLOT_TO_ITEM_ID[slot]
-        return (slot or "item").lower().replace(" ", "_"), slot or "Item"
+    def _item_id_for_entry(entry: dict) -> tuple[str, str]:
+        """Bucket key for an entry. Weapons bucket by item_classes[0]
+        (server returns slot="Weapon" with item_classes=["Bow"] etc.);
+        everything else buckets by slot."""
+        slot = entry.get("slot")
+        classes = entry.get("item_classes") or []
+        bucket = classes[0] if slot == "Weapon" and classes else slot
+        if bucket and bucket in SLOT_TO_ITEM_ID:
+            return SLOT_TO_ITEM_ID[bucket]
+        return (bucket or "item").lower().replace(" ", "_"), bucket or "Item"
 
     @classmethod
     def _db_from_payload(cls, payload: dict) -> ModDB:
@@ -149,7 +157,7 @@ class CatalogClient:
         entries = payload.get("entries") or []
         for entry in entries:
             slot = entry.get("slot")
-            item_id, item_display = cls._item_id_for(slot)
+            item_id, item_display = cls._item_id_for_entry(entry)
             if item_id not in db.items:
                 db.items[item_id] = ItemType(id=item_id, display_name=item_display)
             fam = entry["mod_family"]

@@ -69,7 +69,9 @@ Output lands in `dist\SlammerWiz.exe`.
 
 ## Status
 
-**v1.1** - empty-catalog fallback hardening; treats "API returned zero mods" as no-data and falls through to cache → shipped fallback instead of leaving the user with 0 mods.
+**v1.2** - Amulets + Rings added to the catalog pull (`?slot=tablet,bow,amulet,ring`). New `[x] Show only ★ god mods` filter in the Rules dialog, on by default (toggle to see the full pool). `min_observed` lowered from 10 to 5 to surface long-tail rolls on accessories without flooding noise.
+
+**v1.1** - multi-slot catalog (`?slot=Tablet,bow`); bow rules now available alongside Precursor Tablet with empirical roll ranges. Empty-remote-response fallback hardening. Shipped-fallback fix under PyInstaller onefile (`sys._MEIPASS`). Catalog request timeout raised to 20s.
 
 **v1.0** - clipboard-only architecture, six guard invariant tests green, validated on PoE 2 Fate of the Vaal league.
 
