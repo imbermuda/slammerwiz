@@ -123,7 +123,7 @@ class CatalogClient:
     # --- remote --------------------------------------------------------
 
     def _fetch(self) -> dict:
-        headers = {"User-Agent": "SlammerWiz/1.2", "Accept": "application/json"}
+        headers = {"User-Agent": "SlammerWiz/1.3", "Accept": "application/json"}
         params: dict = {"min_observed": self.min_observed,
                         "window_hours": self.window_hours}
         if self.slot:

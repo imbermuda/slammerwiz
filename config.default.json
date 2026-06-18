@@ -15,7 +15,7 @@
     "user_tag": "anon",
     "league": "Runes of Aldur",
     "patch": "0.5",
-    "client_version": "slammerwiz/1.1",
+    "client_version": "slammerwiz/1.3",
     "account_salt": ""
   },
   "safety": {
@@ -32,8 +32,8 @@
     "flash_on_match": true,
     "beep_on_match": true,
     "auto_ctrl_c": true,
-    "auto_ctrl_c_delay_ms": 40,
-    "wait_timeout_sec": 1.5,
+    "auto_ctrl_c_delay_ms": 120,
+    "wait_timeout_sec": 5.0,
     "verdict_window_sec": 3.0,
     "clipboard_poll_ms": 30
   },
@@ -42,7 +42,12 @@
   },
   "vision": {
     "enabled": false,
-    "roi": {"x": 0, "y": 0, "w": 1280, "h": 720},
+    "roi": {
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 720
+    },
     "follow_cursor": false,
     "follow_box_w": 1300,
     "follow_box_h": 700,

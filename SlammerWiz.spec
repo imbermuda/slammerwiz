@@ -2,7 +2,7 @@
 from PyInstaller.utils.hooks import collect_submodules
 from PyInstaller.utils.hooks import collect_all
 
-datas = [('data', 'data'), ('assets', 'assets')]
+datas = [('data', 'data'), ('assets', 'assets'), ('config.default.json', '.')]
 binaries = []
 hiddenimports = ['PyQt6', 'pynput.mouse._win32', 'pynput.keyboard._win32']
 hiddenimports += collect_submodules('keyboard')

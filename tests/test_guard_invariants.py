@@ -75,9 +75,14 @@ class SimGuard:
         if not self.intercepting:
             return False
 
+        # WAITING timeout fails SAFE → LOCKED (mirror input_guard.py). A slam
+        # whose verdict never confirmed a MISS is treated as a possible HIT;
+        # the gate locks and only RMB releases it. Flipping to UNBLOCKED here
+        # and passing the next click was the 2026-06-18 burn.
         if (self.state == STATE_WAITING
                 and time.time() - self._wait_started_at > self._wait_timeout_sec):
-            self.state = STATE_UNBLOCKED
+            self.state = STATE_LOCKED
+            self._lmb_down_passed = False
 
         if w_param in (WM_LBUTTONDOWN, WM_LBUTTONDBLCLK):
             if self.state == STATE_UNBLOCKED and not self._post_release_guard:
@@ -262,6 +267,40 @@ def test_fleeting_miss_does_not_release_guard() -> bool:
     return a.report("fleeting-miss")
 
 
+def test_waiting_timeout_must_not_burn() -> bool:
+    """REGRESSION (Victor 2026-06-18 'slammed a hit but could click again'):
+    A slam enters WAITING. The match verdict is late, missing, or deduped by
+    the clipboard watcher (text == last → no _on_item → no notify_verdict).
+    The WAITING safety timeout fires. The NEXT LMB must NOT pass — a slam
+    whose verdict never confirmed a MISS must be treated as a possible HIT.
+    Old behavior flipped WAITING→UNBLOCKED on timeout and passed the next
+    click, burning the hit. Correct behavior: timeout fails safe → LOCKED,
+    user releases with RMB."""
+    a = Assert()
+    print("REGRESSION: WAITING timeout must not let the next click burn")
+    g = SimGuard(); g.enable()
+    g._wait_timeout_sec = 1.5
+    # 1. Slam — passes, enters WAITING.
+    a.that(g._should_drop(WM_LBUTTONDOWN) is False, "slam passes (UNBLOCKED→WAITING)")
+    g._should_drop(WM_LBUTTONUP)
+    a.that(g.state == STATE_WAITING, "state WAITING")
+    # 2. No verdict arrives (deduped clipboard / slow parse). Force the
+    #    timeout by backdating when WAITING started.
+    g._wait_started_at = time.time() - (g._wait_timeout_sec + 0.5)
+    # 3. The next LMB lands while the verdict is still unknown. It MUST be
+    #    dropped — this is the burn that hit the live item.
+    a.that(g._should_drop(WM_LBUTTONDOWN) is True,
+           "LMB after WAITING timeout DROPPED (no burn)")
+    a.that(g.state == STATE_LOCKED,
+           "timeout fails safe → LOCKED (requires RMB to continue)")
+    # 4. Subsequent clicks stay dropped until RMB.
+    a.that(g._should_drop(WM_LBUTTONDOWN) is True, "still dropped while LOCKED")
+    # 5. RMB releases, as normal.
+    a.that(g._should_drop(WM_RBUTTONDOWN) is False, "RMB passes + releases")
+    a.that(g._post_release_guard is True, "post-release guard engaged after RMB")
+    return a.report("waiting-timeout-no-burn")
+
+
 def test_disarm_resets_everything() -> bool:
     """Disarm (F9) must clear all gate state so app is truly inert."""
     a = Assert()
@@ -288,6 +327,7 @@ def main() -> int:
         test_I2_no_click_after_hit(),
         test_I3_rmb_continues(),
         test_fleeting_miss_does_not_release_guard(),
+        test_waiting_timeout_must_not_burn(),
         test_rapid_spam(),
         test_disarm_resets_everything(),
     ]

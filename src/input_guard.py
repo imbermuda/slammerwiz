@@ -409,13 +409,32 @@ else:
                 if not self.intercepting:
                     return False
 
-                # Safety timeout on WAITING — absolute fallback if OCR never
-                # delivers a verdict. Set large (30 s default) so it's well
-                # above any realistic OCR latency; otherwise the timeout can
-                # race the verdict and let a click slip through.
+                # Safety timeout on WAITING. A slam entered WAITING but no
+                # verdict arrived within the window — because parsing was
+                # slow, the clipboard read was deduped (post-slam tooltip
+                # text == previous read, so ClipboardWatcher never fired
+                # _on_item), or PoE hadn't refreshed the tooltip when our
+                # auto Ctrl+C copied it.
+                #
+                # This MUST fail safe. The old code flipped WAITING→UNBLOCKED
+                # here, and the very next LMB then passed straight through —
+                # burning the item if that un-confirmed slam had actually
+                # been a HIT (Victor, 2026-06-18: "slammed a hit but was able
+                # to click again so it disappeared"). A slam whose verdict
+                # never confirmed a MISS is treated as a possible HIT: lock
+                # the gate and require an explicit RMB to continue (I2).
+                #
+                # In normal operation clipboard verdicts land in well under
+                # wait_timeout_sec, so this branch is a true last resort —
+                # it only fires in the anomalous no-verdict case, exactly
+                # when we cannot prove the slam was safe.
                 if (self.state == STATE_WAITING
                         and time.time() - self._wait_started_at > self._wait_timeout_sec):
-                    self.state = STATE_UNBLOCKED
+                    self.state = STATE_LOCKED
+                    self._lmb_down_passed = False
+                    log_event("WAIT timeout",
+                              f"no verdict in {self._wait_timeout_sec}s → "
+                              f"LOCKED (fail-safe, RMB to continue)")
 
                 if w_param in (WM_LBUTTONDOWN, WM_LBUTTONDBLCLK):
                     # Time-based guard expiry: if the post-release guard

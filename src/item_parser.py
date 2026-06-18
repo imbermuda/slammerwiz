@@ -247,6 +247,53 @@ def _scan_mod_candidates(text: str) -> List[str]:
     return out
 
 
+def has_explicit_mods(item: "ParsedItem") -> bool:
+    """True if a parsed clipboard item carries at least one EXPLICIT affix.
+
+    The auto Ctrl+C sometimes snapshots a tooltip before PoE has finished
+    rendering it - most reliably with the "Advanced Item Descriptions"
+    layout, whose heavier tooltip lags the 40-120ms copy window. The result
+    is a clipboard dump that contains ONLY the item's implicit modifier.
+
+    A tablet (or any item) being actively slammed always has explicit mods.
+    An item that parses to implicit-only is therefore an INCOMPLETE capture,
+    not a real miss - the caller must NOT treat it as a confident miss and
+    open the gate, or it burns whatever roll never made it into the buffer
+    (Victor, 2026-06-18 breach-tablet burn).
+
+    Handles both clipboard layouts:
+      * Compact  - implicit lines are tagged ``... (implicit)``.
+      * Advanced - affixes are grouped under ``{ Prefix Modifier ... }`` /
+        ``{ Suffix Modifier ... }`` / ``{ Implicit Modifier }`` annotations.
+    """
+    for raw in item.mods:
+        s = raw.strip()
+        if not s:
+            continue
+        low = s.lower()
+        # Advanced-format annotation lines. A Prefix/Suffix annotation is a
+        # definitive explicit-mod signal; an Implicit annotation is not.
+        if s.startswith("{"):
+            if "prefix modifier" in low or "suffix modifier" in low:
+                return True
+            continue
+        # Compact-format implicit content is tagged "(implicit)".
+        if low.endswith("(implicit)"):
+            continue
+        # Implicit content / cosmetic lines that aren't affixes.
+        if "uses remaining" in low:
+            continue
+        if low.startswith("adds ") and " to a map" in low:
+            continue
+        if low.startswith("can be used"):
+            continue
+        if low in ("tablet", "waystone", "jewel", "{ implicit modifier }"):
+            continue
+        # Anything left is a real explicit mod line.
+        return True
+    return False
+
+
 if __name__ == "__main__":  # manual smoke test
     sample = """Item Class: Body Armours
 Rarity: Rare

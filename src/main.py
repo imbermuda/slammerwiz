@@ -76,7 +76,7 @@ from .clipboard_watcher import ClipboardWatcher
 from .hotkeys import Hotkeys
 from .input_guard import InputGuard
 from .mouse_hotkeys import MouseHotkeys
-from .item_parser import ParsedItem, parse_item
+from .item_parser import ParsedItem, parse_item, has_explicit_mods
 from .mod_db import ModDB
 from .overlay import Overlay, place_top_right
 from .region_picker import RegionPicker
@@ -293,7 +293,7 @@ class App:
         #     buttons as item mods.
         self._clipboard_mode = bool(safety_cfg.get("auto_ctrl_c", True))
         self.guard = InputGuard(
-            wait_timeout_sec=float(safety_cfg.get("wait_timeout_sec", 1.5)),
+            wait_timeout_sec=float(safety_cfg.get("wait_timeout_sec", 5.0)),
             auto_ctrl_c=bool(safety_cfg.get("auto_ctrl_c", True)),
             auto_ctrl_c_delay_ms=int(safety_cfg.get("auto_ctrl_c_delay_ms", 40)),
             verdict_window_sec=float(safety_cfg.get("verdict_window_sec", 3.0)),
@@ -675,6 +675,26 @@ class App:
         return result, is_transition
 
     def _on_item(self, item: ParsedItem) -> None:
+        # Incomplete-capture guard. If a clipboard snapshot of a slammed item
+        # comes back with NO explicit affixes, the auto Ctrl+C caught the
+        # tooltip mid-render (most often with "Advanced Item Descriptions"
+        # on) and the rolled mods never made it into the buffer. Delivering
+        # this as a confident miss would unblock the gate and burn whatever
+        # rolled — the exact 2026-06-18 breach-tablet failure. Hold the gate:
+        # skip the verdict so WAITING stands until a COMPLETE read arrives or
+        # the safety timeout fails safe to LOCKED. Never fail open.
+        if self._armed and self._clipboard_mode and not has_explicit_mods(item):
+            try:
+                from .input_guard import log_event
+                log_event("incomplete",
+                          f"no explicit mods — gate held; base={item.base!r} "
+                          f"mods={item.mods[:4]}")
+            except Exception:
+                pass
+            if self.overlay:
+                self.overlay.status_signal.emit(
+                    "incomplete read — gate held (turn off Advanced Item Descriptions)")
+            return
         result, is_transition = self._record_and_evaluate(item)
         self._deliver_verdict(result)
         # ``is_transition`` may be used later for storage filtering, but we
